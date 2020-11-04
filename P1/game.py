@@ -67,4 +67,5 @@ def eleccion_atack(option):
 			correct_election = True
 			return charac
 
+#comentraio para ver si me funciona bien git hub
 
