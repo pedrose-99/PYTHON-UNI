@@ -1,12 +1,3 @@
-PARTIAL_HP = 20
-PARTIAL_DMG = 6
-FINAL_HP = 40
-FINAL_DMG = 12
-THEORICAL_HP = 8
-THEORICAL_DMG = 4
-TEACHER_HP = 15
-TEACHER_DMG = 7
-
 class Enemies:
 	def __init__(self, hp, dmg):
 		self.hp = hp
@@ -14,22 +5,22 @@ class Enemies:
 
 
 class Partial_exam(Enemies):
-	def __init__(self, hp, dmg, ability):
-		super().__init__(self, PARTIAL_HP, PARTIAL_DMG)
-		self.hability = hability
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
+		#self.ability = ability
 
 class Final_exam(Enemies):
-	def __init__(self, hp, dmg, ability):
-		super().__init__(self, FINAL_HP, FINAL_DMG)
-		self.hability = hability
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
+		#self.ability = ability
 
 class theoretical_class(Enemies):
-	def __init__(self, hp, dmg, ability):
-		super().__init__(self, THEORICAL_HP, THEORICAL_DMG)
-		self.hability = hability
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
+		#self.ability = ability
 
 class Teacher(Enemies):
-	def __init__(self, hp, dmg, ability):
-		super().__init__(self, TEACHER_HP, TEACHER_DMG)
-		self.hability = hability
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
+		#self.ability = ability
 

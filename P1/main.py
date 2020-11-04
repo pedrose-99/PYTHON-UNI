@@ -2,6 +2,7 @@ import sys
 import characters
 import enemies
 import game
+import random
 
 class BadStagesError(Exception):
 	pass
@@ -67,7 +68,7 @@ except BadPlayersError:
 except BadStagesError:
 	print("The value given for -s or --stages must be between 1 and 10. ")
 
-
+#no se si empezar el bucle aqui (creo que no)
 while (not Finish_Game):
 	if (stages == 1 and players == 1):
 		print("A game with one stage will be set up for one player.\n")
@@ -85,9 +86,9 @@ while (not Finish_Game):
 	num = 1
 	actual_stage = 1
 	rondas = 0
-	turno = 0
-	movimiento = 0
-	game_instance = game.Game(rondas, turno, stages, movimiento)
+	personajes_vivos = int(players)
+	enemigos_vivos = 3
+	game_instance = game.Game(rondas, stages, actual_stage, personajes_vivos, enemigos_vivos)
 	while (num <= int(players)):
 		print("Player", num, ". Please, choose a character (1-4): ")
 		election = int(input())
@@ -103,7 +104,48 @@ while (not Finish_Game):
 	print("				*		STAGE 1        *					")
 	print("				---- CURRENT MONSTERS ----			")
 	print("		++++++++++++++++++++++++++++++++++++++		")
-	game_instance.add_enemies(actual_stage)
-	print("AQUI VAN LOS ENEMIGOS")
-	#hacer un print enemies stats
-
+	while (actual_stage < int(stages) or Finish_Game):
+		game_instance.add_enemies(actual_stage)
+		print("AQUI VAN LOS ENEMIGOS")
+		#hacer un print enemies stats
+		while (personajes_vivos > 0 and enemigos_vivos > 0):
+			num = 0
+			while (num < personajes_vivos):
+				if (game_instance.charactrs[num].hp_actual > 0 and enemigos_vivos > 0):
+					damage = game_instance.eleccion_attack(game_instance.charactrs[num], election)
+					#Añadir que tiene que recibir 2 variables
+					enemie_random =random.randrange(0, enemigos_vivos)
+					print("Daño realizado a ", game_instance.enemies[enemie_random] ,damage)
+					print("VIDA ANTES DE QUE LE ZURRE ", game_instance.enemies[enemie_random], game_instance.enemies[enemie_random].hp)
+					game_instance.enemies[enemie_random].hp = game_instance.quitar_vida(game_instance.enemies[enemie_random].hp, damage)
+					print("VIDA DESPUES DE QUE LE ZURRE", game_instance.enemies[enemie_random], game_instance.enemies[enemie_random].hp)
+					num = num + 1
+				else:
+					num = num + 1
+				if (game_instance.enemies[enemie_random].hp <= 0):
+					print("ENEMIGO", game_instance.enemies[enemie_random], "ESTA MUERTISIMO")
+					game_instance.enemies.pop(enemie_random)
+					enemigos_vivos = enemigos_vivos - 1
+			num = 0
+			while (num < enemigos_vivos):
+				random_charac = random.randrange(0, personajes_vivos)
+				damage = game_instance.attack(game_instance.enemies[num].dmg)
+				print("DAÑO QUE VOY A RECIBIR", damage)
+				print("VIDA ANTES DE RECIBIR UN BOFETON", game_instance.charactrs[random_charac], game_instance.charactrs[random_charac].hp ,"/", game_instance.charactrs[random_charac].hp_actual, )
+				game_instance.charactrs[random_charac].hp_actual = game_instance.quitar_vida(game_instance.charactrs[random_charac].hp_actual, damage)
+				print("VIDA DESPUES DE RECIBIR UN BOFETON ", game_instance.charactrs[random_charac], game_instance.charactrs[random_charac].hp ,"/", game_instance.charactrs[random_charac].hp_actual)
+				num = num + 1
+				if (game_instance.charactrs[random_charac].hp_actual <= 0):
+					game_instance.charactrs[random_charac].hp_actual = 0
+					print("EL PERSONAJE", game_instance.charactrs[random_charac], "NECESITA QUE LE REVIVAN")
+					personajes_vivos = personajes_vivos - 1
+			rondas = rondas + 1
+			if (personajes_vivos == 0):
+				Finish_Game = True
+				print("HAS PERDIDO ")
+			elif (enemigos_vivos == 0 and actual_stage == int(stages)):
+				print("HAS GANADO")
+				Finish_Game = True
+			elif (enemigos_vivos == 0):
+				actual_stage = actual_stage + 1
+				rondas = 0
