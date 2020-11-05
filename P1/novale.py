@@ -120,7 +120,7 @@ class Characters:
 	def __init__(self, hp, dmg, special):
 		self.hp = hp
 		self.dmg = dmg
-		self.hp_actual = hp
+		self.hp_real = hp
 	#	self.hability = ability
 		self.__special = special
 
@@ -186,7 +186,7 @@ class Characters:
 	def __init__(self, hp, dmg, special):
 		self.hp = hp
 		self.dmg = dmg
-		self.hp_actual = hp
+		self.hp_real = hp
 		self.vida = True
 		self.special = special
 
@@ -211,3 +211,34 @@ class whatsapper(Characters):
 	def __init__(self, hp, dmg, special):
 		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, WHATSAPPER_SPECIAL)
 		self.type = 4
+
+
+
+[15:35] David Roldán Álvarez
+    
+for e in game_instance.enemigos_vivos:
+         e.print_stats()
+​[15:37] David Roldán Álvarez
+    
+print(e.get_stats_str())
+​[15:38] David Roldán Álvarez
+    
+return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+​[15:48] David Roldán Álvarez
+    
+for e in self.enemies:
+      print(e._class._name_)
+​[15:49] David Roldán Álvarez
+    
+self.enemies[2]
+
+
+			if (game_instance.enemies[num].type == 1):
+				print("			  Partial exam: Stats: 20HP and 6DMG")
+			elif (game_instance.enemies[num].type == 2):
+				print("		   	  Final exam: Stats: 40P and 12DMG")
+			elif (game_instance.enemies[num].type == 3):
+				print("			  Theoretical: Stats: 8HP and 4DMG")
+			elif (game_instance.enemies[num].type == 4):
+				print("			  Teacher: Stats: 15HP and 7DMG")
+			num = num + 1
