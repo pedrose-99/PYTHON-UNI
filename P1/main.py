@@ -68,99 +68,124 @@ except BadPlayersError:
 except BadStagesError:
 	print("The value given for -s or --stages must be between 1 and 10. ")
 
-#no se si empezar el bucle aqui (creo que no)
 while (not Finish_Game):
 	num = 1
 	actual_stage = 1
-	enemigos_vivos = 3
+	enemigos_totales = 3
 	rondas = 1
 	personajes_vivos = int(players)
-	game_instance = game.Game(rondas, stages, actual_stage, personajes_vivos, enemigos_vivos)
+	personajes_totales = int(players)
+	game_instance = game.Game(rondas, stages, actual_stage, personajes_vivos, enemigos_totales,personajes_totales)
 	if (stages == 1 and players == 1):
 		print("A game with one stage will be set up for one player.\n")
 	game_instance.print_stats()
 	while (num <= int(players)):
-		print("Player", num, ". Please, choose a character (1-4): ")
-		election = int(input())
+		election = input(("Player",num,". Please, choose a character (1-4):" ))
+		election = int(election)
 		if (election >= 1 and election <= 4):
 			game_instance.add_player(election)
-			#hacer diccionario guardando los personajes
-			print(game_instance.personajes)
+			game_instance.print_characters(game_instance, num - 1)
 			num = num + 1
 			Finish_Game = False
-	# AÑADIR FUNCION PARA QUE TE IMPRIMA LOS PERSONAJES Y SUS STATS
 
-	while (actual_stage <= int(stages) and not Finish_Game):
-		enemigos_vivos = 3
+	while (game_instance.actual_stage <= int(stages) and not Finish_Game):
 		num = 0
-		game_instance.add_enemies(actual_stage)
-		#while (num < int(players)):
-			#game_instance.personajes[num].special = 1
-			#num = num + 1
-		game_instance.print_actual_stage(actual_stage)
+		game_instance.enemigos_vivos = enemigos_totales
+		game_instance.add_enemies(game_instance.enemigos_vivos)
+		game_instance.print_actual_stage(game_instance)
 		num = 0
-		while (num < enemigos_vivos):
-			print("			",game_instance.enemies[num])
+		while (num < game_instance.enemigos_vivos):
+			if (game_instance.enemies[num].type == 1):
+				print("			  Partial exam: Stats: 20HP and 6DMG")
+			elif (game_instance.enemies[num].type == 2):
+				print("		   	  Final exam: Stats: 40P and 12DMG")
+			elif (game_instance.enemies[num].type == 3):
+				print("			  Theoretical: Stats: 8HP and 4DMG")
+			elif (game_instance.enemies[num].type == 4):
+				print("			  Teacher: Stats: 15HP and 7DMG")
 			num = num + 1
 		print("		 	  ++++++++++++++++++++++++++++++++++++++		")
-		#hacer un print enemies stats
-		game_instance.reset_stats(game_instance, personajes_vivos)
-		while (personajes_vivos > 0 and enemigos_vivos > 0):
+		game_instance.reset_stats(game_instance, game_instance.personajes_vivos)
+		while (game_instance.personajes_vivos > 0 and game_instance.enemigos_vivos > 0):
 			game_instance.print_players_turn()
 			num = 0
 			cura = 0
 			jugador = 1
-			while (num < personajes_vivos and enemigos_vivos > 0):
-				if (game_instance.personajes[num].hp_actual > 0 and enemigos_vivos > 0 and personajes_vivos > 0):
-					print(game_instance.personajes[num],"Player", jugador,".")
-					damage, cura = game_instance.eleccion_attack(game_instance, num, election, rondas, personajes_vivos, players)
-					#Añadir que tiene que recibir 2 variables
-					if (damage > 0):
-						enemie_random =random.randrange(0, enemigos_vivos)
+			while (num < game_instance.personajes_vivos and game_instance.enemigos_vivos > 0):
+				if (game_instance.personajes[num].hp_actual > 0 and game_instance.enemigos_vivos > 0 and game_instance.personajes_vivos > 0):
+				#	print(type(game_instance.personajes[num]).__name__,"Player", jugador,".")
+					damage, cura, charac = game_instance.eleccion_attack(game_instance, num, election, jugador)
+					if (charac == 's' and game_instance.personajes[num].type == 3):
+						golpe = 0
+						while (golpe < game_instance.enemigos_vivos):
+							enemie_random =random.randrange(0, game_instance.enemigos_vivos)
+							game_instance.enemies[golpe].hp = game_instance.quitar_vida(game_instance.enemies[golpe].hp, damage)
+							print(type(game_instance.personajes[num]).__name__,"did", damage,"damage to ", type(game_instance.enemies[golpe]).__name__,".", type(game_instance.enemies[enemie_random]).__name__, "has", game_instance.enemies[enemie_random].hp,"hp left.")	
+							if (game_instance.enemies[golpe].hp <= 0 and game_instance.enemigos_vivos > 0):
+								print("ENEMIGO", type(game_instance.enemies[golpe]).__name__, "ESTA MUERTISIMO")
+								game_instance.enemies.pop(golpe)
+								game_instance.enemigos_vivos = game_instance.enemigos_vivos - 1
+							else:
+								golpe = golpe + 1
+					elif (damage > 0):
+						enemie_random =random.randrange(0, game_instance.enemigos_vivos)
 						game_instance.enemies[enemie_random].hp = game_instance.quitar_vida(game_instance.enemies[enemie_random].hp, damage)
-						print(game_instance.personajes[num],"did", damage,"damage to ", game_instance.enemies[enemie_random],".", game_instance.enemies[enemie_random], "has", game_instance.enemies[enemie_random].hp,"hp left.")	
-						if (game_instance.enemies[enemie_random].hp <= 0 and enemigos_vivos > 0):
-							print("ENEMIGO", game_instance.enemies[enemie_random], "ESTA MUERTISIMO")
+						print(type(game_instance.personajes[num]).__name__,"did", damage,"damage to ", type(game_instance.enemies[enemie_random]).__name__,".", type(game_instance.enemies[enemie_random]).__name__, "has", game_instance.enemies[enemie_random].hp,"hp left.")	
+						if (game_instance.enemies[enemie_random].hp <= 0 and game_instance.enemigos_vivos > 0):
+							print("ENEMIGO", type(game_instance.enemies[enemie_random]).__name__, "ESTA MUERTISIMO")
 							game_instance.enemies.pop(enemie_random)
-							enemigos_vivos = enemigos_vivos - 1
+							game_instance.enemigos_vivos = game_instance.enemigos_vivos - 1
+					elif (damage == 0 and cura == 0):
+						print("El jugador ha sido revivido")
 					else:
-						random_charac = random.randrange(0, personajes_vivos)
-						game_instance.personajes[random_charac].hp_actual = game_instance.personajes[random_charac].hp_actual + cura
-						if (game_instance.personajes[random_charac].hp_actual > game_instance.personajes[random_charac].hp):
-							game_instance.personajes[random_charac].hp_actual = game_instance.personajes[random_charac].hp
-							print("The", game_instance.personajes[random_charac], "has been completely restored. Hp =", game_instance.personajes[random_charac].hp_actual)
-						else:
-							print("The", game_instance.personajes[random_charac], "has",game_instance.personajes[random_charac].hp_actual,"of",game_instance.personajes[random_charac].hp, "hp ")
+						correct_heal = False
+						while (not correct_heal):
+							random_charac = input("Which character do you want to heal:")
+							random_charac = int(random_charac)
+							if (random_charac > game_instance.personajes_vivos):
+								print("Incorrect value")
+							elif (game_instance.personajes[random_charac].hp_actual < game_instance.personajes[random_charac].hp):
+								correct_heal = True
+								game_instance.personajes[random_charac].hp_actual = game_instance.personajes[random_charac].hp_actual + cura
+								if (game_instance.personajes[random_charac].hp_actual > game_instance.personajes[random_charac].hp):
+									game_instance.personajes[random_charac].hp_actual = game_instance.personajes[random_charac].hp
+									print(type(game_instance.personajes[random_charac]).__name__, "has been completely restored. Hp =", game_instance.personajes[random_charac].hp_actual)
+								else:
+									print(type(game_instance.personajes[random_charac]).__name__, "has",game_instance.personajes[random_charac].hp_actual,"of",game_instance.personajes[random_charac].hp, "hp ")
+							else:
+								print(type(game_instance.personajes[random_charac]).__name__ ,"can not be heal" )		
 					num = num + 1
 					jugador = jugador + 1
 				else:
 					num = num + 1
 			num = 0
-			if (enemigos_vivos > 0 and personajes_vivos > 0):
+			if (game_instance.enemigos_vivos > 0 and game_instance.personajes_vivos > 0):
 				game_instance.print_monster_turn()
-			while (num < enemigos_vivos and personajes_vivos > 0):
-				random_charac = random.randrange(0, personajes_vivos)
+			while (num < game_instance.enemigos_vivos and game_instance.personajes_vivos > 0):
+				random_charac = random.randrange(0, game_instance.personajes_vivos)
 				damage = game_instance.attack(game_instance.enemies[num].dmg)
 				if (game_instance.enemies[num] == enemies.Teacher and damage == 7):
 					damage = 14
 				game_instance.personajes[random_charac].hp_actual = game_instance.quitar_vida(game_instance.personajes[random_charac].hp_actual, damage)
-				print(game_instance.enemies[num],"did", damage,"damage to ", game_instance.personajes[random_charac],".", game_instance.personajes[random_charac], "has", game_instance.personajes[random_charac].hp_actual,"hp left.")
+				print(type(game_instance.enemies[num]).__name__,"did", damage,"damage to ", type(game_instance.personajes[random_charac]).__name__,".", type(game_instance.personajes[random_charac]).__name__, "has", game_instance.personajes[random_charac].hp_actual,"hp left.")
 				num = num + 1
 				if (game_instance.personajes[random_charac].hp_actual <= 0):
-					print("EL PERSONAJE", game_instance.personajes[random_charac], "NECESITA QUE LE REVIVAN")
+					print("EL PERSONAJE", type(game_instance.personajes[random_charac]).__name__, "NECESITA QUE LE REVIVAN")
 					game_instance.add_dead(game_instance.personajes[random_charac])
 					game_instance.personajes.pop(random_charac)
-					personajes_vivos = personajes_vivos - 1
-			rondas = rondas + 1
-			if (personajes_vivos == 0):
+					game_instance.personajes_vivos = game_instance.personajes_vivos - 1
+			game_instance.rondas = game_instance.rondas + 1
+			print(game_instance.rondas)
+			if (game_instance.personajes_vivos == 0):
 				print("HAS PERDIDO ")
+				game_instance.actual_stage = game_instance.actual_stage + 1
 				Finish_Game = True
-			elif (enemigos_vivos == 0 and actual_stage == int(stages)):
+			elif (game_instance.enemigos_vivos == 0 and game_instance.actual_stage == int(stages)):
 				print("HAS GANADO")
+				game_instance.actual_stage = game_instance.actual_stage + 1
 				Finish_Game = True
-			elif (enemigos_vivos == 0):
-				actual_stage = actual_stage + 1
-				rondas = 1
+			elif (game_instance.enemigos_vivos == 0):
+				game_instance.actual_stage = game_instance.actual_stage + 1
 
 
 #Al terminar el programa comprobar las reglas de los enemigos

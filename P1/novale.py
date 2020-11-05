@@ -76,7 +76,7 @@ except BadStagesError:
 
 
 	print("********************************************************\n")
-	funcion(print_character_stats)
+	funcion(print_personaje_stats)
 	print("********************************************************\n")
 	funcion(print_stage())
 	active_stage = True
@@ -94,7 +94,7 @@ except BadStagesError:
 
 
 
-		def print_character(self, players):
+		def print_personaje(self, players):
 			num = 0
 		while (num < players):
 			if (self.personajes[num - 1] == "<class 'characters.bookworm'>"):
@@ -177,3 +177,37 @@ class whatsapper(Characters):
 			add_player(3)
 		elif (character == whatsapper):
 			add_player(4)
+
+
+
+
+
+class Characters:
+	def __init__(self, hp, dmg, special):
+		self.hp = hp
+		self.dmg = dmg
+		self.hp_actual = hp
+		self.vida = True
+		self.special = special
+
+class bookworm(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, BOOKWORM_SPECIAL)
+		self.type = 1
+
+class worker(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(WORKER_HP, WORKER_DMG, WORKER_SPECIAL)
+		self.type = 2
+
+class procrastinator(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(PROCRASTINSTOR_HP,PROCRASTINSTOR_DMG, PROCRASTINSTOR_SPECIAL)
+		self.type = 3
+		self.uso_habilidad = 1
+
+
+class whatsapper(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, WHATSAPPER_SPECIAL)
+		self.type = 4

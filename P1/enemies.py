@@ -15,21 +15,24 @@ class Enemies:
 
 class Partial_exam(Enemies):
 	def __init__(self, hp, dmg):
-		super().__init__(PARTIAL_HP, PARTIAL_DMG)
+		super().__init__(hp, dmg)
+		self.type = 1
 		#self.ability = ability
 
 class Final_exam(Enemies):
 	def __init__(self, hp, dmg):
-		super().__init__(FINAL_HP, FINAL_DMG)
+		super().__init__(hp, dmg)
+		self.type = 2
 		#self.ability = ability
 
 class theoretical_class(Enemies):
 	def __init__(self, hp, dmg):
-		super().__init__(THEORICAL_HP, THEORICAL_DMG)
+		super().__init__(hp, dmg)
 		#self.ability = ability
+		self.type = 3
 
 class Teacher(Enemies):
 	def __init__(self, hp, dmg):
-		super().__init__(TEACHER_HP, TEACHER_DMG)
+		super().__init__(hp, dmg)
 		#self.ability = ability
-
+		self.type = 4
