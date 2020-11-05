@@ -97,5 +97,83 @@ except BadStagesError:
 		def print_character(self, players):
 			num = 0
 		while (num < players):
-			if (self.charactrs[num - 1] == "<class 'characters.bookworm'>"):
+			if (self.personajes[num - 1] == "<class 'characters.bookworm'>"):
 				
+
+
+				BOOKWORM_HP = 25
+BOOKWORM_DMG = 9
+WORKER_HP = 40
+WORKER_DMG = 10
+PROCRASTINSTOR_HP = 30
+PROCRASTINSTOR_DMG = 6
+WHATSAPPER_HP = 20
+WHATSAPPER_DMG = 6
+BOOKWORM_SPECIAL = 4
+WORKER_SPECIAL = 3
+PROCRASTINSTOR_SPECIAL = 3
+WHATSAPPER_SPECIAL = 3
+
+
+
+class Characters:
+	def __init__(self, hp, dmg, special):
+		self.hp = hp
+		self.dmg = dmg
+		self.hp_actual = hp
+	#	self.hability = ability
+		self.__special = special
+
+class bookworm(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, BOOKWORM_SPECIAL)
+		#self.hability = bookworm_ability
+
+class worker(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(WORKER_HP, WORKER_DMG, WORKER_SPECIAL)
+		#self.hability = worker_ability
+
+class procrastinator(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(PROCRASTINSTOR_HP, WORKER_DMG, PROCRASTINSTOR_SPECIAL)
+	#	self.hability = ability
+
+class whatsapper(Characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, WHATSAPPER_SPECIAL)
+	#	self.hability = ability
+
+
+
+
+				else:
+					if (game.characters.special == 0):
+						if (game.characters[num] == bookworm):
+							if(personajes_vivos < players):
+								election = input()
+								#preguntar
+									add_player(self, game.muertos[int(election) - 1])
+							else:
+								print("All players are alive, so the skill will not used")
+
+						elif (game.characters == worker):
+							damage = damage = random.randrange(1, game.characters[num].dmg)
+							damage = (damage + game.characters[num].dmg) * 1,5
+							correct_election = True
+							return damage
+						elif (game.characters[num] == procrastinator):
+							print("aun no lo hice")
+						elif (game.characters[num] == whatsapper):
+							cura = game.characters[num].dmg * 2
+							return damage, cura
+
+								def add_dead_player(self, character, game):
+			if (character == bookworm):
+
+		elif (character == worker):
+			add_player(2)
+		elif (character == procrastinator): 
+			add_player(3)
+		elif (character == whatsapper):
+			add_player(4)
