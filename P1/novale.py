@@ -242,3 +242,137 @@ self.enemies[2]
 			elif (game_instance.enemies[num].type == 4):
 				print("			  Teacher: Stats: 15HP and 7DMG")
 			num = num + 1
+
+
+
+				def eleccion_Character(self, num):
+			correct_election = False
+		while (not correct_election):
+			charac = input(("Player", num, ". Please, choose a character (1-4):"))
+			charac = int(charac)
+			if (charac >= 1 and charac <= 4):
+				print(charac,"\n")
+				correct_election = True
+		self.add_player(charac)
+
+
+
+class characters:
+	def __init__(self, hp, dmg, special):
+		self.hp = hp
+		self.dmg = dmg
+		self.hp_real = hp
+		self.special = special
+	
+	def get_stats(self):
+		pass
+
+	def get_damage(self):
+		pass
+
+class bookworm(characters):
+	def __init__(self, special):
+		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, special)
+	
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+	
+	def get_damage(self):
+		damage = random.randrange(1, BOOKWORM_DMG)
+		return damage
+
+class worker(characters):
+	def __init__(self, special):
+		super().__init__(WORKER_HP, WORKER_DMG, special)
+	
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+	
+	def get_damage(self):
+		damage = random.randrange(1, WORKER_DMG)
+		return damage
+
+class procrastinator(characters):
+	def __init__(self, special):
+		super().__init__(PROCRASTINSTOR_HP,PROCRASTINSTOR_DMG, special)
+		self.uso_habilidad = 1
+
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, PROCRASTINSTOR_DMG)
+		return damage
+
+class whatsapper(characters):
+	def __init__(self, special):
+		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, special)
+	
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, WHATSAPPER_DMG)
+		return damage
+
+
+
+class Enemies:
+	def __init__(self, hp, dmg):
+		self.hp = hp
+		self.dmg = dmg
+	
+	def get_stats(self):
+		pass
+
+	def get_damage(self):
+		pass
+
+
+class Partial_exam(Enemies):
+	def __init__(self):
+		super().__init__(PARTIAL_HP, PARTIAL_DMG)
+
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+	
+	def get_damage(self):
+		damage = random.randrange(1, PARTIAL_DMG)
+		return damage
+
+# type(class.__name__)
+
+class Final_exam(Enemies):
+	def __init__(self):
+		super().__init__(FINAL_HP, FINAL_DMG)
+
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, FINAL_DMG)
+		return damage
+
+class theoretical_class(Enemies):
+	def __init__(self):
+		super().__init__(THEORICAL_HP, THEORICAL_DMG)
+	
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, THEORICAL_DMG)
+		return damage
+
+class Teacher(Enemies):
+	def __init__(self):
+		super().__init__(TEACHER_HP, TEACHER_DMG)
+
+	def get_stats(self):
+		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, TEACHER_DMG)
+		if (damage == 7):
+			damage = 14
+		return damage

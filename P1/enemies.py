@@ -21,11 +21,11 @@ class Enemies:
 
 
 class Partial_exam(Enemies):
-	def __init__(self):
-		super().__init__(PARTIAL_HP, PARTIAL_DMG)
+	def __init__(self, hp, dmg):
+		super().__init__( hp, dmg)
 
 	def get_stats(self):
-		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
 	
 	def get_damage(self):
 		damage = random.randrange(1, PARTIAL_DMG)
@@ -34,33 +34,33 @@ class Partial_exam(Enemies):
 # type(class.__name__)
 
 class Final_exam(Enemies):
-	def __init__(self):
-		super().__init__(FINAL_HP, FINAL_DMG)
+	def __init__(self, hp, dmg):
+		super().__init__( hp, dmg)
 
 	def get_stats(self):
-		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
 
 	def get_damage(self):
 		damage = random.randrange(1, FINAL_DMG)
 		return damage
 
 class theoretical_class(Enemies):
-	def __init__(self):
-		super().__init__(THEORICAL_HP, THEORICAL_DMG)
+	def __init__(self, hp, dmg):
+		super().__init__( hp, dmg)
 	
 	def get_stats(self):
-		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
 
 	def get_damage(self):
 		damage = random.randrange(1, THEORICAL_DMG)
 		return damage
 
 class Teacher(Enemies):
-	def __init__(self):
-		super().__init__(TEACHER_HP, TEACHER_DMG)
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
 
 	def get_stats(self):
-		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
 
 	def get_damage(self):
 		damage = random.randrange(1, TEACHER_DMG)

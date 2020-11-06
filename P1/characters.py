@@ -7,8 +7,12 @@ PROCRASTINSTOR_HP = 30
 PROCRASTINSTOR_DMG = 6
 WHATSAPPER_HP = 20
 WHATSAPPER_DMG = 6
+BOOKWORM_SPECIAL = 4
+WORKER_SPECIAL = 3
+PROCRASTINSTOR_SPECIAL = 3
+WHATSAPPER_SPECIAL = 3
 
-class Characters:
+class characters:
 	def __init__(self, hp, dmg, special):
 		self.hp = hp
 		self.dmg = dmg
@@ -21,9 +25,9 @@ class Characters:
 	def get_damage(self):
 		pass
 
-class bookworm(Characters):
-	def __init__(self, special):
-		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, special)
+class bookworm(characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(hp, dmg, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
@@ -32,9 +36,9 @@ class bookworm(Characters):
 		damage = random.randrange(1, BOOKWORM_DMG)
 		return damage
 
-class worker(Characters):
-	def __init__(self, special):
-		super().__init__(WORKER_HP, WORKER_DMG, special)
+class worker(characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(hp , dmg, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
@@ -43,9 +47,9 @@ class worker(Characters):
 		damage = random.randrange(1, WORKER_DMG)
 		return damage
 
-class procrastinator(Characters):
-	def __init__(self, special):
-		super().__init__(PROCRASTINSTOR_HP,PROCRASTINSTOR_DMG, special)
+class procrastinator(characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(hp, dmg, special)
 		self.uso_habilidad = 1
 
 	def get_stats(self):
@@ -55,9 +59,9 @@ class procrastinator(Characters):
 		damage = random.randrange(1, PROCRASTINSTOR_DMG)
 		return damage
 
-class whatsapper(Characters):
-	def __init__(self, special):
-		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, special)
+class whatsapper(characters):
+	def __init__(self, hp, dmg, special):
+		super().__init__(hp, dmg, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
