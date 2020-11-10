@@ -48,36 +48,36 @@ def election_character(game_instance, num):
 		election = input(("Player "+ str(num + 1)+". Please, choose a character (1-4): "))
 		election = int(election)
 		if (election >= 1 and election <= 4):
-			#game_instance.add_player(election)
 			game_instance.add_player(election)
 			correct_option = True
 		else:
 			print("The option is not correct.")
 
-def init_game():
-	stages, players = parse_args()
-	start_game = check_args(stages, players)
+def init_game(players, stages, start_game):
 	players = int(players)
 	stages = int(stages)
 	if (start_game):
-		game_instance = game.Game(stages, players)
-		game_instance.print_all_characters()
-		#crear funcion pa imprimir
+		game_instance = game.Game(players, stages)
+		game_instance.print_all_Characters()
 		for num in range (0, players):
 			election_character(game_instance, num)
 	return game_instance
 
-Finish_game = False
-
-game_instance = init_game()
-# Aqui va el imprimir los personajes seleccionados game_instance.print_all_characters()
-while (not Finish_game):
-	game_instance.update_stage()
-	players_dead = game_instance.fight()
-	if (players_dead or game_instance.momment_stage == game_instance.stages):
-		Finish_game = True
-		if (players_dead):
-			print("You lost the game!!! Try again")
-		else:
-			print("You won the game!!! Congratulations")
-
+try:
+	stages, players = parse_args()
+	start_game = check_args(stages, players)
+	if (start_game):
+		finish_game = False
+		game_instance = init_game(players, stages, start_game)
+		game_instance.print_characters()
+		while (not finish_game):
+			game_instance.update_stage()
+			players_dead = game_instance.fight()
+			if (players_dead or game_instance.momment_stage == game_instance.stages):
+				finish_game = True
+				if (players_dead):
+					print("You lost the game!!! Try again")
+				else:
+					print("You won the game!!! Congratulations")
+except:
+	print("\nThe arguments given were wrong. Game has been stopped. Nobody wins.")

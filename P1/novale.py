@@ -88,7 +88,7 @@ except BadStagesError:
 
 
 
-			from Characters import Bookworn, Worker, Whatsapper, procrastinator
+			from Characters import Bookworn, Worker, Whatsapper, Procrastinator
 
 			from Enemies import Partial_exam, Final_Exam, theoretical_class, Teacher
 
@@ -97,22 +97,22 @@ except BadStagesError:
 		def print_personaje(self, players):
 			num = 0
 		while (num < players):
-			if (self.personajes[num - 1] == "<class 'characters.bookworm'>"):
+			if (self.personajes[num - 1] == "<class 'Characters.Bookworm'>"):
 				
 
 
-				BOOKWORM_HP = 25
-BOOKWORM_DMG = 9
-WORKER_HP = 40
-WORKER_DMG = 10
+				Bookworm_HP = 25
+Bookworm_DMG = 9
+Worker_HP = 40
+Worker_DMG = 10
 PROCRASTINSTOR_HP = 30
 PROCRASTINSTOR_DMG = 6
-WHATSAPPER_HP = 20
-WHATSAPPER_DMG = 6
-BOOKWORM_SPECIAL = 4
-WORKER_SPECIAL = 3
+Whatsapper_HP = 20
+Whatsapper_DMG = 6
+Bookworm_SPECIAL = 4
+Worker_SPECIAL = 3
 PROCRASTINSTOR_SPECIAL = 3
-WHATSAPPER_SPECIAL = 3
+Whatsapper_SPECIAL = 3
 
 
 
@@ -124,32 +124,32 @@ class Characters:
 	#	self.hability = ability
 		self.__special = special
 
-class bookworm(Characters):
+class Bookworm(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, BOOKWORM_SPECIAL)
-		#self.hability = bookworm_ability
+		super().__init__(Bookworm_HP, Bookworm_DMG, Bookworm_SPECIAL)
+		#self.hability = Bookworm_ability
 
-class worker(Characters):
+class Worker(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(WORKER_HP, WORKER_DMG, WORKER_SPECIAL)
-		#self.hability = worker_ability
+		super().__init__(Worker_HP, Worker_DMG, Worker_SPECIAL)
+		#self.hability = Worker_ability
 
-class procrastinator(Characters):
+class Procrastinator(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(PROCRASTINSTOR_HP, WORKER_DMG, PROCRASTINSTOR_SPECIAL)
+		super().__init__(PROCRASTINSTOR_HP, Worker_DMG, PROCRASTINSTOR_SPECIAL)
 	#	self.hability = ability
 
-class whatsapper(Characters):
+class Whatsapper(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, WHATSAPPER_SPECIAL)
+		super().__init__(Whatsapper_HP, Whatsapper_DMG, Whatsapper_SPECIAL)
 	#	self.hability = ability
 
 
 
 
 				else:
-					if (game.characters.special == 0):
-						if (game.characters[num] == bookworm):
+					if (game.Characters.special == 0):
+						if (game.Characters[num] == Bookworm):
 							if(personajes_vivos < players):
 								election = input()
 								#preguntar
@@ -157,25 +157,25 @@ class whatsapper(Characters):
 							else:
 								print("All players are alive, so the skill will not used")
 
-						elif (game.characters == worker):
-							damage = damage = random.randrange(1, game.characters[num].dmg)
-							damage = (damage + game.characters[num].dmg) * 1,5
+						elif (game.Characters == Worker):
+							damage = damage = random.randrange(1, game.Characters[num].dmg)
+							damage = (damage + game.Characters[num].dmg) * 1,5
 							correct_election = True
 							return damage
-						elif (game.characters[num] == procrastinator):
+						elif (game.Characters[num] == Procrastinator):
 							print("aun no lo hice")
-						elif (game.characters[num] == whatsapper):
-							cura = game.characters[num].dmg * 2
+						elif (game.Characters[num] == Whatsapper):
+							cura = game.Characters[num].dmg * 2
 							return damage, cura
 
 								def add_dead_player(self, character, game):
-			if (character == bookworm):
+			if (character == Bookworm):
 
-		elif (character == worker):
+		elif (character == Worker):
 			add_player(2)
-		elif (character == procrastinator): 
+		elif (character == Procrastinator): 
 			add_player(3)
-		elif (character == whatsapper):
+		elif (character == Whatsapper):
 			add_player(4)
 
 
@@ -190,26 +190,26 @@ class Characters:
 		self.vida = True
 		self.special = special
 
-class bookworm(Characters):
+class Bookworm(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, BOOKWORM_SPECIAL)
+		super().__init__(Bookworm_HP, Bookworm_DMG, Bookworm_SPECIAL)
 		self.type = 1
 
-class worker(Characters):
+class Worker(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(WORKER_HP, WORKER_DMG, WORKER_SPECIAL)
+		super().__init__(Worker_HP, Worker_DMG, Worker_SPECIAL)
 		self.type = 2
 
-class procrastinator(Characters):
+class Procrastinator(Characters):
 	def __init__(self, hp, dmg, special):
 		super().__init__(PROCRASTINSTOR_HP,PROCRASTINSTOR_DMG, PROCRASTINSTOR_SPECIAL)
 		self.type = 3
 		self.uso_habilidad = 1
 
 
-class whatsapper(Characters):
+class Whatsapper(Characters):
 	def __init__(self, hp, dmg, special):
-		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, WHATSAPPER_SPECIAL)
+		super().__init__(Whatsapper_HP, Whatsapper_DMG, Whatsapper_SPECIAL)
 		self.type = 4
 
 
@@ -257,7 +257,7 @@ self.enemies[2]
 
 
 
-class characters:
+class Characters:
 	def __init__(self, hp, dmg, special):
 		self.hp = hp
 		self.dmg = dmg
@@ -270,29 +270,29 @@ class characters:
 	def get_damage(self):
 		pass
 
-class bookworm(characters):
+class Bookworm(Characters):
 	def __init__(self, special):
-		super().__init__(BOOKWORM_HP, BOOKWORM_DMG, special)
+		super().__init__(Bookworm_HP, Bookworm_DMG, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
 	
 	def get_damage(self):
-		damage = random.randrange(1, BOOKWORM_DMG)
+		damage = random.randrange(1, Bookworm_DMG)
 		return damage
 
-class worker(characters):
+class Worker(Characters):
 	def __init__(self, special):
-		super().__init__(WORKER_HP, WORKER_DMG, special)
+		super().__init__(Worker_HP, Worker_DMG, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
 	
 	def get_damage(self):
-		damage = random.randrange(1, WORKER_DMG)
+		damage = random.randrange(1, Worker_DMG)
 		return damage
 
-class procrastinator(characters):
+class Procrastinator(Characters):
 	def __init__(self, special):
 		super().__init__(PROCRASTINSTOR_HP,PROCRASTINSTOR_DMG, special)
 		self.uso_habilidad = 1
@@ -304,15 +304,15 @@ class procrastinator(characters):
 		damage = random.randrange(1, PROCRASTINSTOR_DMG)
 		return damage
 
-class whatsapper(characters):
+class Whatsapper(Characters):
 	def __init__(self, special):
-		super().__init__(WHATSAPPER_HP, WHATSAPPER_DMG, special)
+		super().__init__(Whatsapper_HP, Whatsapper_DMG, special)
 	
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
 
 	def get_damage(self):
-		damage = random.randrange(1, WHATSAPPER_DMG)
+		damage = random.randrange(1, Whatsapper_DMG)
 		return damage
 
 
@@ -370,6 +370,56 @@ class Teacher(Enemies):
 
 	def get_stats(self):
 		return "HP" + str(self.hp) + "DMG" + str(self.dmg)
+
+	def get_damage(self):
+		damage = random.randrange(1, TEACHER_DMG)
+		if (damage == 7):
+			damage = 14
+		return damage
+
+
+
+class Partial_exam(Enemies):
+	def __init__(self):
+		super().__init__( hp, dmg)
+
+	def get_stats(self):
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
+	
+	def get_damage(self):
+		damage = random.randrange(1, PARTIAL_DMG)
+		return damage
+
+# type(class.__name__)
+
+class Final_exam(Enemies):
+	def __init__(self, hp, dmg):
+		super().__init__( hp, dmg)
+
+	def get_stats(self):
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
+
+	def get_damage(self):
+		damage = random.randrange(1, FINAL_DMG)
+		return damage
+
+class theoretical_class(Enemies):
+	def __init__(self, hp, dmg):
+		super().__init__( hp, dmg)
+	
+	def get_stats(self):
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
+
+	def get_damage(self):
+		damage = random.randrange(1, THEORICAL_DMG)
+		return damage
+
+class Teacher(Enemies):
+	def __init__(self, hp, dmg):
+		super().__init__(hp, dmg)
+
+	def get_stats(self):
+		return ("HP"+str(self.hp)+"DMG"+str(self.dmg))
 
 	def get_damage(self):
 		damage = random.randrange(1, TEACHER_DMG)

@@ -1,5 +1,5 @@
 import sys
-import characters
+import Characters
 import enemies
 import game
 import random
@@ -82,13 +82,13 @@ while (not Finish_Game):
 	#hacerlo en una funcion
 	if (stages == 1 and players == 1):
 		print("A game with one stage will be set up for one player.\n")
-	game_instance.print_stats()#print_characters
+	game_instance.print_stats()#print_Characters
 	while (num <= int(players)):
 		election = input(("Player",num,". Please, choose a character (1-4):" ))
 		election = int(election)
 		if (election >= 1 and election <= 4):
 			game_instance.add_player(election)
-			game_instance.print_characters(game_instance, num - 1)
+			game_instance.print_Characters(game_instance, num - 1)
 			num = num + 1
 			Finish_Game = False
 

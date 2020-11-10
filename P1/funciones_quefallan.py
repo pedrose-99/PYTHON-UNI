@@ -8,46 +8,46 @@
 					damage = self.personajes[num].get_damage()
 					self.cooldown_reduction(num)
 					correct_election = True
-					damage = self.procrastinator_passive(num, damage)
+					damage = self.Procrastinator_passive(num, damage)
 				elif (charac == 's'):
 					if (self.personajes[num].special == 0):
-						if (type(self.personajes[num]).__name__  == bookworm):
+						if (type(self.personajes[num]).__name__  == Bookworm):
 							if(len(self.personajes) < self.players):
-								correct_election = self.bookworm_revive(num, correct_election)
+								correct_election = self.Bookworm_revive(num, correct_election)
 							else:
 								print("All players are alive. The skill can not used")
-						elif (type(self.personajes[num]).__name__  == type(worker).__name__):
-							damage = self.worker_special_attack(num)
+						elif (type(self.personajes[num]).__name__  == type(Worker).__name__):
+							damage = self.Worker_special_attack(num)
 							correct_election = True
-						elif ((type(self.personajes[num]).__name__  == procrastinator) and self.personajes[num].uso_habilidad == 1):
-							damage = self.procrastinator_special_attack(num)
+						elif ((type(self.personajes[num]).__name__  == Procrastinator) and self.personajes[num].uso_habilidad == 1):
+							damage = self.Procrastinator_special_attack(num)
 							correct_election = True
-						elif (type(self.personajes[num]).__name__  == whatsapper):
+						elif (type(self.personajes[num]).__name__  == Whatsapper):
 							damage = 0
-							cura = self.whatsapper_heal(num)
+							cura = self.Whatsapper_heal(num)
 							correct_election = True
 		return damage, cura, charac
 
 	def type_character(self, muerto):
-		if (type(self.muertos[muerto]).__name__  == bookworm):
+		if (type(self.muertos[muerto]).__name__  == Bookworm):
 			new_player = 1
-		if (type(self.personajes[muerto]).__name__  == worker):
+		if (type(self.personajes[muerto]).__name__  == Worker):
 			new_player = 2
-		if (type(self.personajes[muerto]).__name__  == procrastinator):
+		if (type(self.personajes[muerto]).__name__  == Procrastinator):
 			new_player = 3
-		if (type(self.personajes[muerto]).__name__  == whatsapper):
+		if (type(self.personajes[muerto]).__name__  == Whatsapper):
 			new_player = 4
 		return new_player
 
 		def add_dead_player(self, character):
-			if (type(character).__name__ == bookworm):
-			self.muertos.append(bookworm)
-		elif (type(character).__name__ == worker):
-			self.muertos.append(worker)
-		elif (type(character).__name__ == procrastinator): 
-			self.muertos.append(procrastinator)
-		elif (type(character).__name__ == whatsapper):
-			self.muertos.append(whatsapper) 
+			if (type(character).__name__ == Bookworm):
+				self.muertos.append(Bookworm)
+		elif (type(character).__name__ == Worker):
+			self.muertos.append(Worker)
+		elif (type(character).__name__ == Procrastinator): 
+			self.muertos.append(Procrastinator)
+		elif (type(character).__name__ == Whatsapper):
+			self.muertos.append(Whatsapper) 
 
 		def hit_all_enemies(self, num):
 			damage = self.personajes[num].get_damage() + self.personajes[num].dmg + self.momment_stage
