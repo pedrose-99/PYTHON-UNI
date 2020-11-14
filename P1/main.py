@@ -1,10 +1,7 @@
 import game
-
-class ArgumentError(Exception):
-	pass
-
+import getopt, sys
+#funcion para recibir argumentos
 def parse_args ():
-	import getopt, sys
 	stages = 1
 	players = 1
 	opts, args = getopt.getopt(sys.argv[1:], "s:p:", ["stages=","players="])
@@ -15,6 +12,7 @@ def parse_args ():
 			players = a
 	return stages, players
 
+#funcion para comprobar si los argumentos son erroneos
 def check_args (stages, players):
 	correct_stages = False
 	correct_players = False
@@ -28,7 +26,7 @@ def check_args (stages, players):
 			print("The value given for -s or --stages must be between 1 and 10. ")
 	except ValueError:
 		print("The value given for -s or --stages must be an integer number.")
-	
+
 	try:
 		players = int(players)
 		if (players >= 1 and players <= 4):
@@ -42,6 +40,7 @@ def check_args (stages, players):
 		start_game = True
 		return start_game
 
+#funcion para seleccionar el personaje
 def election_character(game_instance, num):
 	correct_option = False
 	while (not correct_option):
@@ -53,16 +52,18 @@ def election_character(game_instance, num):
 		else:
 			print("The option is not correct.")
 
+#funcion para iniciar el juego
 def init_game(players, stages, start_game):
 	players = int(players)
 	stages = int(stages)
 	if (start_game):
 		game_instance = game.Game(players, stages)
-		game_instance.print_all_Characters()
+		game_instance.print_all_characters()
 		for num in range (0, players):
 			election_character(game_instance, num)
 	return game_instance
 
+#main del juego
 try:
 	stages, players = parse_args()
 	start_game = check_args(stages, players)
@@ -71,13 +72,6 @@ try:
 		game_instance = init_game(players, stages, start_game)
 		game_instance.print_characters()
 		while (not finish_game):
-			game_instance.update_stage()
-			players_dead = game_instance.fight()
-			if (players_dead or game_instance.momment_stage == game_instance.stages):
-				finish_game = True
-				if (players_dead):
-					print("You lost the game!!! Try again")
-				else:
-					print("You won the game!!! Congratulations")
+			finish_game = game_instance.fight()
 except:
 	print("\nThe arguments given were wrong. Game has been stopped. Nobody wins.")

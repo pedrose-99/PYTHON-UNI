@@ -15,12 +15,12 @@ class Enemies:
 	
 	def __str__(self):
 		pass
-	
+
 	def get_damage(self):
-		pass
+		return random.randrange(1, self.dmg + 1)
 	
 	def take_life(self, damage):
-		pass
+		self.hp = self.hp - damage
 
 
 class Partial_exam(Enemies):
@@ -28,59 +28,31 @@ class Partial_exam(Enemies):
 		super().__init__(PARTIAL_HP, PARTIAL_DMG)
 
 	def __str__(self):
-		cadena = ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
-		return cadena
-	
-	def get_damage(self):
-		damage = random.randrange(1, PARTIAL_DMG)
-		return damage
-	
-	def take_life(self, damage):
-		self.hp = self.hp - damage
+		return ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
 
 class Final_exam(Enemies):
 	def __init__(self):
 		super().__init__(FINAL_HP, FINAL_DMG)
 
 	def __str__(self):
-		cadena = ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
-		return cadena
-
-	def get_damage(self):
-		damage = random.randrange(1, FINAL_DMG)
-		return damage
-	
-	def take_life(self, damage):
-		self.hp = self.hp - damage
+		return ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
 
 class Theoretical_class(Enemies):
 	def __init__(self):
 		super().__init__(THEORICAL_HP, THEORICAL_DMG)
-	
-	def __str__(self):
-		cadena = ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
-		return cadena
 
-	def get_damage(self):
-		damage = random.randrange(1, THEORICAL_DMG)
-		return damage
-	
-	def take_life(self, damage):
-		self.hp = self.hp - damage
+	def __str__(self):
+		return ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
 
 class Teacher(Enemies):
 	def __init__(self):
 		super().__init__(TEACHER_HP, TEACHER_DMG)
 
 	def __str__(self):
-		cadena = ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
-		return cadena
-
+		return ("			"+__class__.__name__+": Stats: " + str(self.hp) +"HP and "+ str(self.dmg)+"DMG")
+		
 	def get_damage(self):
-		damage = random.randrange(1, TEACHER_DMG)
+		damage = random.randrange(1, TEACHER_DMG + 1)
 		if (damage == 7):
 			damage = 14
 		return damage
-	
-	def take_life(self, damage):
-		self.hp = self.hp - damage
