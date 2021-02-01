@@ -353,12 +353,13 @@ def manage_msgsenddcme(msg_client, c_socket, c_address, name):
 def number_games():
 	n_games = 0
 	cursor.first()
-	game = cursor.get()
-	while game != None:
+	game_pointer = cursor.empty()
+	while game_pointer != None:
+		game = cursor.get()
 		if game.game_full:
 			n_games +=1
 		cursor.next()
-		game = cursor.get()
+		game_pointer = cursor.empty()
 	return n_games
 
 def ngames():
@@ -370,12 +371,13 @@ def ngames():
 def games_info():
 	global cursor
 	cursor.last()
-	game = cursor.get()
-	while game != None:
-		if game.game_full:
-			game.data.print_game_stats()
-		cursor.prev()
+	game_pointer = cursor.empty()
+	while game_pointer != None:
 		game = cursor.get()
+		if game.game_full:
+			game.print_game_stats()
+		cursor.prev()
+		game_pointer = cursor.empty()
 
 def server_command(msg, exit):
 	if msg == "shutdown":
