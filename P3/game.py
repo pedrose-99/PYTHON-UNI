@@ -59,6 +59,14 @@ class Game:
 		all_characters = ("***********		 AVAILABLE CHARACTERS		 ***********\n"+"1.- "+bookworm+ "2.- "+worker+ "3.- "+procrasti+ "4.- "+ whats+ "\n********************************************************\n")
 		return all_characters
 
+	def print_game_stats(self):
+		print("------GAME------")
+		print("Total Players:",self.players)
+		print("Dead Players:",len(self.dead_turns))
+		print("Current Stage:",self.momment_stage)
+		print("Total Stages:",self.stages)
+		print("----------------")
+	
 	def print_current_stage(self):
 		return ("		********************************************************\n"+"				************************					\n"+"				*        STAGE"+str(self.momment_stage)+"      *	\n"+"				************************					\n"+"				---- CURRENT MONSTERS ----			\n"+"		 	  ++++++++++++++++++++++++++++++++++++++		\n")
 

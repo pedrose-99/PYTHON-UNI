@@ -4,82 +4,9 @@ import getopt, sys, socket, protocols,json
 import threading
 import os
 import signal
+import doublylinkedlist
 
-class Node:
-	def __init__(self, data):
-		self.data = data
-		self.next = None
-		self.prev = None
-
-class DoublyLinkedList:  
-	def __init__(self):
-		self.head = None
-		self.tail = None
-
-	def is_empty(self):
-		if self.head == None:
-			return True
-		else:
-			return False
-
-	def insert_first(self, dato):
-		temporal = Node(dato)
-		if self.is_empty():
-			self.head = temporal
-			self.tail = temporal
-		else:
-			temporal.next = self.head
-			self.head.prev = temporal
-			self.head = temporal
-	
-	def insert_last(self, dato):
-		temporal = Node(dato)
-		if self.is_empty():
-			self.head = temporal
-			self.tail = temporal
-		else:
-			temporal.prev = self.tail
-			self.tail.next = temporal
-			self.tail = temporal
-
-	def delete_first(self):
-		if self.head.next == None:
-			self.head = None
-			self.tail = None
-		else:
-			self.head = self.head.next
-			self.head.prev = None
-
-	def delete_last(self):
-		if self.tail.prev == None:
-			self.head = None
-			self.tail = None
-		else:
-			self.tail = self.tail.prev 
-			self.tail.next = None
-	
-	def delete_position(self, pos):
-		prev = self.head
-		current = self.head
-		k = 0
-		n_games = 0
-		game = self.head
-		while game != None:
-			n_games +=1
-			game = game.next
-		if pos == 0:
-			self.delete_first()
-		elif pos == (n_games - 1):
-			self.delete_last()
-		elif pos > 0:
-			while k != pos and current.next != None:
-				prev = current
-				current = current.next
-				k+=1
-			if k == pos:
-				temporal = current.next
-				prev.next = current.next
-				temporal.prev = prev
+#Constantes y variables globales
 
 MIN_OPTION = 1
 MAX_OPTION = 4
@@ -87,8 +14,7 @@ MIN_CHARACTER = 1
 MAX_CHARACTER = 5
 
 game_finished = 0
-
-new_list = DoublyLinkedList()
+cursor = doublylinkedlist.Cursor(doublylinkedlist.DoublyLinkedList())
 
 #funcion para obtener argumentos
 def parse_args ():
@@ -112,19 +38,19 @@ def check_args (port):
 
 #funcion crear juego
 
-#YATA
 def create_game(players, stages, c_socket, c_address, name):
 	game_instance = game.Game(players, stages)
 	game_instance.add_c_address(c_address)
-	new_list.insert_last(game_instance)
+	cursor.iterable.insert_last(game_instance)
 	print("(CREATE) "+str(name)+" created a game.")
 	send_choosecharacter(c_socket, c_address, game_instance)
 
 
 #funcion unirse a juego
-#cambiar
 def join_game(players, stages, c_socket, c_address, name):
-	if new_list.head == None:
+	cursor.first()
+	game = cursor.empty()
+	if game is None:
 		create_game(players, stages, c_socket, c_address, name)
 	else:
 		send_sendgames(players, stages, c_socket, c_address, name)
@@ -132,16 +58,14 @@ def join_game(players, stages, c_socket, c_address, name):
 #funcion borrar juego y clientes
 def delete_clients_and_game(c_address, name):
 	global game_finished
-	#global new_list
 	try:
 		game_finished +=1
-		game, pos = find_game(c_address)
-		new_list.delete_position(pos)
+		game = find_game(c_address)
+		cursor.iterable.delete_node(game)
 	except KeyError:
 		pass
 	
 #funcion para iniciar el juego
-#cambiar
 def init_game(c_socket, c_address, juego):
 	dam = ""
 	for i in juego.client_info['client_names']:
@@ -152,18 +76,19 @@ def init_game(c_socket, c_address, juego):
 	send_yourturn(player_socket)
 
 #funcion para encontrar el juego
+
 def find_game(c_address):
-	aux_game = new_list.head
-	pos = 0
+	cursor.first()
+	aux_game = cursor.get()
 	while aux_game != None:
 		i = 0
-		while i < len(aux_game.data.client_info['client_addresses']):
-			if aux_game.data.client_info['client_addresses'][i] == c_address:
-				return aux_game, pos
+		while i < len(aux_game.client_info['client_addresses']):
+			if aux_game.client_info['client_addresses'][i] == c_address:
+				return aux_game
 			else:
 				i+=1
-		aux_game = aux_game.next
-		pos +=1
+		cursor.next()
+		aux_game = cursor.get()
 
 #funciones para ENVIAR mensajes SERVIDOR al CLIENTE
 
@@ -191,18 +116,20 @@ def send_servermsg(message, c_socket, c_address):
 	msg_client = json.dumps(message).encode()
 	protocols.send_one_message(c_socket, msg_client)
 
-#cambiar
 def send_sendgames(players, stages, c_socket, c_address, name):
 	gme = ""
-	game = new_list.head
+	cursor.first()
+	game_pointer = cursor.empty()
 	game_vacio = 0
 	i = 1
-	while game != None:
-		if not game.data.game_full and len(game.data.characters) > 0:
+	while game_pointer:
+		game = cursor.get()
+		if not game.game_full and len(game.characters) > 0:
 			game_vacio +=1
-			gme = str(gme)+str(i)+".- Players: "+str(len(game.data.characters))+"/"+str(game.data.players)+"\n"
+			gme = str(gme)+str(i)+".- Players: "+str(len(game.characters))+"/"+str(game.players)+"\n"
 			i+=1
-		game = game.next
+		cursor.next()
+		game_pointer = cursor.empty()
 	if game_vacio != 0:
 		msg = "Available games\n"+str(gme)+"\nChoose one option:"
 		message = {"Type": protocols.MSG_SEND_GAMES, "Message": msg, "Options":list(range(1, game_vacio + 1))}
@@ -273,12 +200,14 @@ def send_dc_server_dc():
 	mg = "The server has been shut down. The game finished. Nobody wins."
 	msg = {"Type": protocols.MSG_SEND_DC_SERVER, "Reason": mg}
 	msg_client = json.dumps(msg).encode()
-	game = new_list.head
+	cursor.first()
+	game = cursor.get()
 	while game != None:
 		data_game = game.data
 		for socket in data_game.client_info['client_sockets']:
 			protocols.send_one_message(socket, msg_client)
-		game = game.next
+		cursor.next()
+		game = cursor.get()
 
 #mensajes que el cliente envia al servidor
 
@@ -302,11 +231,10 @@ def	manage_msgsendserveroption(msg_client, c_socket, c_address, name):
 		send_dc_server_exit(c_socket, "You ended the conexion.")
 		end = True
 	return end
-#cambiar
+
 def manage_msgsendcharacter(msg_client, c_socket, c_address, name):
 	option = int(msg_client["Option"])
-	game, pos = find_game(c_address)
-	juego = game.data
+	juego = find_game(c_address)
 	if not juego.game_full:
 		if len(juego.characters) > 0:
 			print("(JOIN) "+str(name)+" joined a game")
@@ -328,11 +256,10 @@ def manage_msgsendcharacter(msg_client, c_socket, c_address, name):
 	else:
 		print(name,"could not join the game.")
 		send_sendvalidgame(c_socket, False)
-#cambiar
+
 def manage_msgsendcharactercommand(msg_client, c_socket, c_address, name):
 	end = False
-	game, pos = find_game(c_address)
-	player_game = game.data
+	player_game = find_game(c_address)
 	command = msg_client["Option"]
 	damage, next, message = player_game.players_turn(command, name)
 	if not next:
@@ -376,35 +303,38 @@ def dead_player_turn(player_game):
 			i = 0
 		else:
 			i+=1
-#cambiar
+
 def manage_msgsendgamechoice(msg_client, c_socket, c_address, name):
 	option = int(msg_client["Option"])
-	game = new_list.head
+	cursor.first()
+	game = cursor.get()
+	game_pointer = cursor.empty()
 	gme = 1
-	i = 1
 	correct_game = False
-	while (not correct_game and game != None):
-		if (game.data.game_full):
-			game = game.next
+	while (not correct_game and game_pointer != None):
+		if (game.game_full):
+			cursor.next()
+			game_pointer = cursor.empty()
+			if game_pointer:
+				game = cursor.get()
 		else:
 			if gme == option:
 				correct_game = True
 			else:
-				game = game.next
+				cursor.next()
+				game = cursor.get()
+				game_pointer = cursor.empty()
 				gme +=1
-	if game == None:
+	if game_pointer == None:
 		send_sendvalidgame(c_socket, False)
 	else:
 		send_sendvalidgame(c_socket, True)
-		game.data.add_c_address(c_address)
-		send_choosecharacter(c_socket, c_address, game.data)
-#cambiar
+		game.add_c_address(c_address)
+		send_choosecharacter(c_socket, c_address, game)
+
 def manage_msgsenddcme(msg_client, c_socket, c_address, name):
 	try:
-		#posicion_juego = client_game[c_address]
-		#player_game = games[posicion_juego]
-		game , pos = find_game(c_address)
-		player_game = game.data
+		player_game = find_game(c_address)
 		mon = name+" disconnected. The game can not continue."
 		print("(EXIT) "+name+" disconnected.")
 		for i in range (0, len(player_game.client_info['client_sockets'])):
@@ -422,31 +352,42 @@ def manage_msgsenddcme(msg_client, c_socket, c_address, name):
 #funciones para el servidor
 def number_games():
 	n_games = 0
-	game = new_list.head
+	cursor.first()
+	game = cursor.get()
 	while game != None:
-		if game.data.game_full:
+		if game.game_full:
 			n_games +=1
-		game = game.next
+		cursor.next()
+		game = cursor.get()
 	return n_games
 
 def ngames():
+	global game_finished
 	n_games = number_games()
 	print("Active games:",n_games)
 	print("Finished games:",game_finished)
 
 def games_info():
-	global new_list
-	game = new_list.tail
+	global cursor
+	cursor.last()
+	game = cursor.get()
 	while game != None:
-		if game.data.game_full:
-			print("------GAME------")
-			print("Total Players:",game.data.players)
-			print("Dead Players:",len(game.data.dead_turns))
-			print("Current Stage:",game.data.momment_stage)
-			print("Total Stages:",game.data.stages)
-			print("----------------")
-		game = game.prev
+		if game.game_full:
+			game.data.print_game_stats()
+		cursor.prev()
+		game = cursor.get()
 
+def server_command(msg, exit):
+	if msg == "shutdown":
+		print("The server has been closed by the admin.")
+		exit = True
+		os.kill(pid, signal.SIGTERM)
+	elif msg == "gamesinfo":
+		games_info()
+	elif msg == "ngames":
+		ngames()
+	else:
+		print("The command you have requested does not exist. The existing commands are ngames, gamesinfo and shutdown")
 
 class ClientThread(threading.Thread):
 	def __init__(self, client_socket, client_address):
@@ -510,15 +451,7 @@ try:
 		print("The socket is listening.")
 		while not exit:
 			msg = input()
-			if msg == "shutdown":
-				exit = True
-				os.kill(pid, signal.SIGTERM)
-			elif msg == "gamesinfo":
-				games_info()
-			elif msg == "ngames":
-				ngames()
-			else:
-				pass 
+			server_command(msg, exit)
 except KeyboardInterrupt:
 	os.kill(pid,signal.SIGTERM)
 except:

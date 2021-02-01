@@ -225,3 +225,29 @@ sjshhshsj
 				n.pref.nref = None
 			else:
 				print("Element not found")
+
+
+
+
+	def delete_node(self, data):
+		prev = self.head
+		current = self.head
+		k = 0
+		n_games = 0
+		game = self.head
+		while game != None:
+			n_games +=1
+			game = game.next
+		if pos == 0:
+			self.delete_first()
+		elif pos == (n_games - 1):
+			self.delete_last()
+		elif pos > 0:
+			while k != pos and current.next != None:
+				prev = current
+				current = current.next
+				k+=1
+			if k == pos:
+				temporal = current.next
+				prev.next = current.next
+				temporal.prev = prev
